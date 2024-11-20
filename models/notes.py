@@ -73,12 +73,20 @@ class FUNC_NOTE:
         with open(os.path.join(path, 'data/notes.json'), 'w') as file:
             json.dump(data, file, indent=4)
 
-
-    def import_export(self, path, mode):
+    def import_export(self, path_csv_file, mode):
         if mode == 'import':
-            with open(path, 'r') as file:
-                data = csv.DictReader(file)
-            path = '/'.join(os.getcwd().split('/')[:-1])
+            with open(path_csv_file, 'r') as file_new:
+                file_new = csv.DictReader(file_new)
+                path = '/'.join(os.getcwd().split('/')[:-1])
+                with open(os.path.join(path, 'data/contacts.json'), 'r') as file:
+                    data = json.load(file)
+                    for row in file_new:
+                        data.append({
+                            'id': row['id'],
+                            'title': row['title'],
+                            'content': row['content'],
+                            'timestamp': row['timestamp']
+                        })
             with open(os.path.join(path, 'data/notes.json'), 'w') as file:
                 json.dump(data, file, indent=4)
         elif mode == 'export':
