@@ -3,7 +3,7 @@ import json
 import os
 import csv
 
-class Note:
+class NOTE:
     def __init__(self, title, content):
         self.note_id = None
         self.title = title
@@ -11,15 +11,12 @@ class Note:
         self.timestamp = None
 
 
-
-
-
 class FUNC_NOTE:
     def __init__(self):
         pass
 
 
-    def create(self, Note:Note):
+    def create(self, Note:NOTE):
         path = '/'.join(os.getcwd().split('/')[:-1])
         with open(os.path.join(path, 'data/notes.json'), 'r') as file:
             data = json.load(file)
@@ -51,7 +48,7 @@ class FUNC_NOTE:
             data = json.load(file)
             return data[1:]
 
-    def update(self, id, Note:Note):
+    def update(self, id, Note):
         path = '/'.join(os.getcwd().split('/')[:-1])
         with open(os.path.join(path, 'data/notes.json'), 'r') as file:
             data = json.load(file)
@@ -91,6 +88,4 @@ class FUNC_NOTE:
 
         else:
             return 'Invalid mode'
-
-
 
