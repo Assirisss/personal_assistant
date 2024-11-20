@@ -100,11 +100,25 @@ class TASK_FUNC:
         with open(os.path.join(path, 'data/tasks.json'), 'w') as file:
             json.dump(data, file, indent=4)
 
-    def import_export(self, path, mode):
+    def import_export(self, path_csv_file, mode):
         if mode == 'import':
-            with open(path, 'r') as file:
-                data = csv.DictReader(file)
-            path = '/'.join(os.getcwd().split('/')[:-1])
+            with open(path_csv_file, 'r') as file_new:
+                file_new = csv.DictReader(file_new)
+                path = '/'.join(os.getcwd().split('/')[:-1])
+                with open(os.path.join(path, 'data/contacts.json'), 'r') as file:
+                    data = json.load(file)
+                    for row in file_new:
+                        task = TASK(row['title'], row['description'], row['done'], row['priority'], row['due_date'])
+                        task.task_id = data[0]['count'] + 1
+                        data[0]['count'] = data[0]['count'] + 1
+                        data.append({
+                            'id': task.task_id,
+                            'title': task.title,
+                            'description': task.description,
+                            'done': task.done,
+                            'priority': task.priority,
+                            'due_date': task.due_date
+                        })
             with open(os.path.join(path, 'data/tasks.json'), 'w') as file:
                 json.dump(data, file, indent=4)
         elif mode == 'export':
