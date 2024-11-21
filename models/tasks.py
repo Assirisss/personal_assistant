@@ -38,16 +38,15 @@ class TASK_FUNC:
             json.dump(data, file, indent=4)
 
 
-    def show_all_tasks(self, filter_type=None, done=True):
+    def show_all_tasks(self, filter_type=None, done=True, typ='Высокий'):
         path = '/'.join(os.getcwd().split('/')[:-1])
         with open(os.path.join(path, 'data/tasks.json'), 'r') as file:
             data = json.load(file)[1:]
             mas = []
             if filter_type == 'priority':
-                for typ in ['Высокий', 'Средний', 'Низкий']:
-                    for task in data:
-                        if task['priority'] == typ:
-                            mas.append(task)
+                for task in data:
+                    if task['priority'] == typ:
+                        mas.append(task)
                 return mas
             elif filter_type == 'done':
                 for task in data:
