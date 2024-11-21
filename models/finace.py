@@ -29,7 +29,7 @@ class FINANCE_FUNC:
         with open(os.path.join(path, 'data/finance.json'), 'w') as file:
             json.dump(data, file, indent=4)
 
-    def show_all_fin_not(self, filter_type=None, data='01-01-2020', cat=None):
+    def show_all_fin_not(self, filter_type=None, date='01-01-2020', cat=None):
         path = '/'.join(os.getcwd().split('/')[:-1])
         with open(os.path.join(path, 'data/finance.json'), 'r') as file:
             data = json.load(file)[1:]
@@ -41,7 +41,7 @@ class FINANCE_FUNC:
                 return mas
             elif filter_type == 'date':
                 for task in data:
-                    if task['date'] == data:
+                    if task['date'] == date:
                         mas.append(task)
                 return mas
             else:
@@ -56,22 +56,6 @@ class FINANCE_FUNC:
                 if datetime.strptime(start, '%d-%m-%Y') <= datetime.strptime(task['date'], '%d-%m-%Y') <= datetime.strptime(end, '%d-%m-%Y'):
                     mas.append(task)
             return mas
-
-
-
-    def update(self, id, finance:Finance):
-        path = '/'.join(os.getcwd().split('/')[:-1])
-        with open(os.path.join(path, 'data/finance.json'), 'r') as file:
-            data = json.load(file)
-            for finance in data:
-                if finance['id'] == id:
-                    finance['amount'] = finance.amount
-                    finance['category'] = finance.category
-                    finance['date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-                    finance['description'] = finance.description
-                    break
-        with open(os.path.join(path, 'data/finance.json'), 'w') as file:
-            json.dump(data, file, indent=4)
 
     def import_export(self, path_csv_file, mode):
         if mode == 'import':
@@ -121,14 +105,19 @@ class FINANCE_FUNC:
         path = '/'.join(os.getcwd().split('/')[:-1])
         with open(os.path.join(path, 'data/finance.json'), 'r') as file:
             data = json.load(file)[1:]
-            income = 0
-            expenses = 0
-            for task in data:
-                if task['category'] == category:
-                    if task['amount'] > 0:
-                        income += task['amount']
-                    else:
-                        expenses += task['amount']
-            return (income, expenses)
+            mas = []
+            for cat in [i['category'] for i in data]:
+                income = []
+                expenses = []
+                for task in data:
+                    if task['category'] == category:
+                        if task['amount'] > 0:
+                            income.append(task['amount'])
+                        else:
+                            expenses.append(task['amount'])
+                mas.append(['cat', income, expenses])
+        return mas
+
+
 
 
