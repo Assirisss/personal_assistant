@@ -73,7 +73,7 @@ class FUNC_NOTE:
         with open(os.path.join(path, 'data/notes.json'), 'w') as file:
             json.dump(data, file, indent=4)
 
-    def import_export(self, path_csv_file, mode):
+    def import_export(self,  mode, path_csv_file=None):
         if mode == 'import':
             with open(path_csv_file, 'r') as file_new:
                 file_new = csv.DictReader(file_new)
