@@ -1,6 +1,19 @@
 [
-  {
-    "count": 0
-  }
-
+    {
+        "count": 2
+    },
+    {
+        "id": 1,
+        "amount": "sgg",
+        "category": "m",
+        "date": "21-11-2024",
+        "description": "qwe"
+    },
+    {
+        "id": 2,
+        "amount": "wetwerwer",
+        "category": "n",
+        "date": "21-11-2024",
+        "description": "werwer"
+    }
 ]
