@@ -73,19 +73,34 @@ class FUNC_NOTE:
         with open(os.path.join(path, 'data/notes.json'), 'w') as file:
             json.dump(data, file, indent=4)
 
-
-    def import_export(self, path, mode):
+    def import_export(self, path_csv_file, mode):
         if mode == 'import':
-            with open(path, 'r') as file:
-                data = csv.DictReader(file)
-            path = '/'.join(os.getcwd().split('/')[:-1])
+            with open(path_csv_file, 'r') as file_new:
+                file_new = csv.DictReader(file_new)
+                path = '/'.join(os.getcwd().split('/')[:-1])
+                with open(os.path.join(path, 'data/notes.json'), 'r') as file:
+                    data = json.load(file)
+                    for row in file_new:
+                        note = NOTE(row['title'], row['content'])
+                        note.note_id = data[0]['count'] + 1
+                        data[0]['count'] = data[0]['count'] + 1
+                        note.timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        data.append({
+                            'id': note.note_id,
+                            'title': note.title,
+                            'content': note.content,
+                            'timestamp': note.timestamp
+                        })
             with open(os.path.join(path, 'data/notes.json'), 'w') as file:
                 json.dump(data, file, indent=4)
         elif mode == 'export':
-            with open('notes.json', 'r') as file:
+            path = '/'.join(os.getcwd().split('/')[:-1])
+            with open(os.path.join(path, 'data/notes.json'), 'r') as file:
                 data = json.load(file)
-                return data
-
-        else:
-            return 'Invalid mode'
+            with open(os.path.join(path, 'data/export_notes.json'), 'w') as file:
+                file.write('')
+                writer = csv.DictWriter(file, fieldnames= ['id', 'title', 'content', 'timestamp'])
+                writer.writeheader()
+                for task in data:
+                    writer.writerow(task)
 
